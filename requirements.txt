@@ -1,0 +1,9 @@
+flask
+flask-cors
+tensorflow
+keras>=3.14.0,<4.0.0
+Pillow
+numpy
+python-dotenv
+requests
+opencv-python-headless

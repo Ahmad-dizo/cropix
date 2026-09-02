@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI - Crop Disease Detection & Advisory</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="logo.ico" type="image/x-icon">
+    <link rel="icon" type="image/png" sizes="32x32" href="logo.png">
+    <link rel="icon" type="image/png" sizes="64x64" href="logo.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="logo.png">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <img src="logo.png" alt="CROPIX logo" class="nav-logo-img">
+                <div class="nav-logo-text">
+                    <span class="brand-title">CROPIX</span>
+                    <small class="nav-subtitle"></small>
+                </div>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link" id="navHome">Home</a></li>
+                <li><a href="#features" class="nav-link" id="navFeatures">Features</a></li>
+                <li><a href="#detection" class="nav-link" id="navDetection">Detection</a></li>
+                <li><a href="#chat" class="nav-link" id="navAdvisory">Advisory</a></li>
+                <li><a href="#contact" class="nav-link" id="navContact">Contact</a></li>
+            </ul>
+            <div class="nav-tools">
+                <label for="languageSelect" class="language-label" id="languageLabel">Language</label>
+                <select id="languageSelect" class="language-select" aria-label="Language">
+                    <option value="sw">Kiswahili</option>
+                    <option value="en">English</option>
+                </select>
+            </div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sidebar (collapsible) -->
+    <aside id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <button id="newChatBtn" class="btn btn-outline">+ New Chat</button>
+        </div>
+        <ul id="convoList" class="convo-list">
+            <!-- Conversations populated by JS -->
+        </ul>
+    </aside>
+
+    <button id="sidebarToggle" class="sidebar-toggle" aria-label="Toggle Chats">Chats</button>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1 id="heroTitle">AI-Based Crop Disease Detection and Advisory</h1>
+            <p id="heroSubtitle">Identify crop diseases early and get instant agricultural advice to protect your harvest</p>
+            <div class="hero-buttons">
+                <button class="btn btn-primary" id="heroStartBtn" onclick="startDetection()">Start Detection</button>
+                <button class="btn btn-secondary" id="heroAdvisoryBtn" onclick="openChatWidget(true)">Get Advisory</button>
+            </div>
+        </div>
+        <div class="hero-image">
+            <div class="hero-icon">
+                <img src="logo.png" alt="CROPIX" class="hero-logo-img">
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2 id="featuresTitle">Why Choose CROPIX?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <h3 id="featureRecognitionTitle">Image Recognition</h3>
+                    <p id="featureRecognitionDesc">Upload crop leaf images for instant AI-powered disease identification with high accuracy</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3 id="featureAdviceTitle">Smart Advice</h3>
+                    <p id="featureAdviceDesc">Receive personalized treatment recommendations based on disease diagnosis</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3 id="featureMobileTitle">Mobile Friendly</h3>
+                    <p id="featureMobileDesc">Access CROPIX anywhere, anytime from your phone or tablet</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3 id="featureAnalyticsTitle">Farm Analytics</h3>
+                    <p id="featureAnalyticsDesc">Track crop health and disease patterns with detailed analytics</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3 id="featureSupportTitle">Expert Support</h3>
+                    <p id="featureSupportDesc">Connect with agricultural experts for personalized guidance</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 id="featureSecurityTitle">Data Security</h3>
+                    <p id="featureSecurityDesc">Your farm data is encrypted and securely stored</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Chat Assistant -->
+    <div id="chat" class="chat-widget" aria-live="polite">
+        <button type="button" class="chat-fab" id="chatToggle" aria-label="Open chat" aria-expanded="false" aria-controls="chatPanel">
+            <i class="fas fa-comments"></i>
+        </button>
+
+        <div class="chat-panel" id="chatPanel" aria-hidden="true" inert>
+            <div class="chat-container" role="dialog" aria-labelledby="chatTitle">
+                <div class="chat-widget-header">
+                    <div class="chat-current">
+                        <span class="chat-current-label" id="chatCurrentLabel">Conversation</span>
+                        <h2 id="chatTitle">AI Chat Assistant</h2>
+                        <strong id="activeChatTitle">New Chat</strong>
+                    </div>
+                    <div class="chat-window-actions">
+                        <button type="button" class="chat-window-btn" id="chatExpandBtn" aria-label="Expand chat" title="Expand chat">
+                            <i class="fas fa-expand"></i>
+                        </button>
+                        <button type="button" class="chat-window-btn" id="chatCloseBtn" aria-label="Minimize chat" title="Minimize chat">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="chat-toolbar">
+                    <button class="btn btn-outline chat-new-btn" id="chatNewBtn">+ New Chat</button>
+                </div>
+
+                <div id="chatMessages" class="chat-messages">
+                    <!-- Chat messages will appear here -->
+                    <div class="chat-message ai">
+                        <div class="message">Uliza kuhusu kilimo, magonjwa ya mazao, au namna ya kutumia mfumo huu. Nitakusaidia.</div>
+                    </div>
+                </div>
+
+                <div class="chat-input-area">
+                    <input type="text" id="chatInput" placeholder="Uliza swali kuhusu kilimo au matumizi ya system...">
+                    <button class="btn btn-primary" id="chatSend">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Disease Detection Section -->
+    <section id="detection" class="detection">
+        <div class="container">
+            <h2 id="detectionTitle">Crop Disease Detection</h2>
+            <p class="section-subtitle" id="detectionSubtitle">Upload an image of your crop leaf to diagnose diseases</p>
+            
+            <div class="detection-content">
+                <div class="selection-row">
+                    <div class="region-selection">
+                        <label for="regionSelect" id="regionLabel">Select Your Region (Tanzania) Before Detection</label>
+                        <select id="regionSelect" required>
+                            <option value="" id="regionPlaceholder">-- Select Region --</option>
+                            <option>Arusha</option>
+                            <option>Dar es Salaam</option>
+                            <option>Dodoma</option>
+                            <option>Mbeya</option>
+                            <option>Morogoro</option>
+                            <option>Mwanza</option>
+                            <option>Kilimanjaro</option>
+                            <option>Tanga</option>
+                            <option>Singida</option>
+                            <option>Tabora</option>
+                            <option>Zanzibar</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="upload-methods" id="uploadMethods">
+                    <button type="button" class="upload-method-btn active" data-mode="file" id="uploadFileBtn">Upload File</button>
+                    <button type="button" class="upload-method-btn" data-mode="camera" id="useCameraBtn">Use Webcam</button>
+                </div>
+
+                <div class="upload-area">
+                    <div class="upload-panel active" id="fileUploadPanel">
+                        <div class="upload-box" id="uploadBox">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <h3 id="uploadBoxTitle">Upload Crop Leaf Image</h3>
+                            <p id="uploadBoxDesc">Drag and drop or click to select</p>
+                            <input type="file" id="fileInput" accept="image/*" hidden>
+                        </div>
+                    </div>
+
+                    <div class="upload-panel webcam-panel" id="webcamPanel">
+                        <div class="camera-box">
+                            <video id="cameraVideo" class="camera-video" autoplay playsinline muted></video>
+                            <div id="cameraPlaceholder" class="camera-placeholder">
+                                <i class="fas fa-camera"></i>
+                                <p id="cameraPlaceholderText">Click Start Camera to capture a crop leaf photo.</p>
+                            </div>
+                            <canvas id="cameraCanvas" hidden></canvas>
+                        </div>
+                        <div class="camera-actions">
+                            <button type="button" class="btn btn-outline" id="startCameraBtn">Start Camera</button>
+                            <button type="button" class="btn btn-primary" id="captureBtn">Capture Photo</button>
+                            <button type="button" class="btn btn-secondary" id="retakeBtn">Retake</button>
+                        </div>
+                        <p class="camera-help" id="cameraHelp">Use webcam if you want to take a fresh picture instead of selecting a file.</p>
+                    </div>
+
+                    <img id="previewImage" class="preview-image" style="display: none;" alt="Preview">
+                    <div id="imageQualityMessage" class="image-quality-message" style="display: none;"></div>
+                </div>
+
+                <div class="detection-actions">
+                    <button class="btn btn-primary" id="detectionStartBtn" onclick="runDetection()">Start Detection</button>
+                </div>
+
+                <div class="detection-result">
+                    <div id="resultContainer" class="result-container" style="display: none;">
+                        <div class="result-header">
+                            <h3 id="resultTitle">Detection Result</h3>
+                            <button class="btn-close" onclick="resetDetection()">✕</button>
+                        </div>
+                        <div id="resultBody" class="result-body">
+                            <!-- Results will be displayed here -->
+                        </div>
+                    </div>
+                    <div id="placeholderMessage" class="placeholder-message">
+                        <i class="fas fa-image"></i>
+                        <p id="placeholderText">Detection results will appear here after analysis.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 id="contactTitle">Get In Touch</h2>
+            <p class="section-subtitle" id="contactSubtitle">Do you have any advice to our system? we are here to listen and modify it</p>
+            
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h4 id="contactPhoneLabel">Phone</h4>
+                            <p>+255 776 159 366</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4 id="contactEmailLabel">Email</h4>
+                            <p>abinhambal7@gmail.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h4 id="contactLocationLabel">Location</h4>
+                            <p>Karume insitute of sciance and technology, mbweni,Zanzibar</p>
+                        </div>
+                    </div>
+                </div>
+
+                <form class="contact-form" onsubmit="handleContactSubmit(event)">
+                    <div class="form-group">
+                        <input type="text" id="contactNameInput" placeholder="Your Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="contactEmailInput" placeholder="Your Email" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="contactMessageInput" placeholder="Your Message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="contactSendBtn">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p id="footerText">&copy; 2026 CROPIX. All rights reserved. | Empowering Farmers with AI Technology</p>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal for Advisory Details -->
+    <div id="advisoryModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeAdvisoryModal()">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

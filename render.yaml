@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: croppix-api
+    runtime: docker
+    plan: starter
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHONUNBUFFERED
+        value: "1"
+      - key: KERAS_BACKEND
+        value: tensorflow
+      - key: MODEL_INPUT_MODE
+        value: raw
+      - key: ENABLE_AI_ADVICE
+        value: "false"
+      - key: ENABLE_LEAF_API_CHECK
+        value: "false"
