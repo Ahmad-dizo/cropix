@@ -1,0 +1,16 @@
+.venv
+.venv311
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.git
+.idea
+.vscode
+node_modules
+plantvillage dataset
+dist
+build
+*.keras
+*.h5
+*.hdf5

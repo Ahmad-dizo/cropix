@@ -14,9 +14,6 @@ api.env
 
 .vscode/
 
-Dockerfile
-docker-compose.yml
-.dockerignore
 
 *.pptx
 
