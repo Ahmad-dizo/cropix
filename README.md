@@ -18,8 +18,9 @@ The main Render URL (`https://YOUR-SERVICE.onrender.com/`) serves the CROPIX
 website as well as the API, so no frontend API URL change is required.
 
 If you need a different model later, update `MODEL_URL` in the `Dockerfile`
-and redeploy. TensorFlow needs more memory than Render's 512 MB plans; keep
-the `starter` plan (or select a plan with at least 2 GB RAM).
+and redeploy. The Blueprint starts on Render's free plan for testing. TensorFlow
+can be memory-intensive, so switch to a plan with at least 2 GB RAM only if the
+free service runs out of memory.
 
 This project exposes a simple Flask API that loads a Keras model and provides an endpoint to predict an uploaded image.
 
